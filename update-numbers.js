@@ -107,7 +107,7 @@ mongoConnection.connect(async (err, db) => {
         process.exit(1)
     }
 
-    numbers.forEach(async (number) => {
+    await Promise.all(numbers.map(async (number) => {
         const newNum = number.slice(2)
         await updateInWhatsappHeader(number, newNum)
         await updateInChannelHeader(number, newNum)
@@ -115,8 +115,8 @@ mongoConnection.connect(async (err, db) => {
         await updateInWhatsappFollowupTemplates(number, newNum)
         await updateInWhatsappUtilityTemplates(number, newNum)
         await updateInMessageTemplate(number, newNum)
-    })
-    console.log('Connected to MongoDB')
-
+    }))
+    console.log('All numbers updated')
     process.exit(0)
 })
+
